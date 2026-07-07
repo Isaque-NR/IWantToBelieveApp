@@ -13,9 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.iwanttobelieveapp.ui.navegacao.Rotas
+import com.example.iwanttobelieveapp.viewmodel.AutenticacaoViewModel
+import com.example.iwanttobelieveapp.viewmodel.AuthUiState
 
 @Composable
-fun TelaFeed(navController: NavController) {
+fun TelaFeed(navController: NavController,
+             authViewModel: AutenticacaoViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,10 +46,13 @@ fun TelaFeed(navController: NavController) {
 
         Button(
             onClick = {
+                authViewModel.sair()
+
                 navController.navigate(Rotas.LOGIN) {
                     popUpTo(Rotas.FEED) {
                         inclusive = true
                     }
+                    launchSingleTop = true
                 }
             }
         ) {

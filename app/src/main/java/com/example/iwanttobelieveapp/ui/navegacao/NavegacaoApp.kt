@@ -1,6 +1,7 @@
 package com.example.iwanttobelieveapp.ui.navegacao
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -9,25 +10,42 @@ import com.example.iwanttobelieveapp.ui.telas.feed.TelaFeed
 import com.example.iwanttobelieveapp.ui.telas.perfil.TelaPerfil
 import com.example.iwanttobelieveapp.ui.telas.registrar.TelaRegistrar
 import com.example.iwanttobelieveapp.ui.telas.nova_publi.TelaNovaPubli
-
+import com.example.iwanttobelieveapp.viewmodel.AutenticacaoViewModel
 @Composable
 fun NavegacaoApp() {
     val navController = rememberNavController()
 
+    val authViewModel: AutenticacaoViewModel = viewModel()
+
+    val startDestination = if (authViewModel.usuarioEstaLogado()) {
+        Rotas.FEED
+    } else {
+        Rotas.LOGIN
+    }
+
     NavHost(
         navController = navController,
-        startDestination = Rotas.LOGIN
+        startDestination = startDestination
     ) {
         composable(Rotas.LOGIN) {
-            TelaLogin(navController)
+            TelaLogin(
+                navController = navController,
+                authViewModel = authViewModel
+            )
         }
 
         composable(Rotas.REGISTRAR) {
-            TelaRegistrar(navController)
+            TelaRegistrar(
+                navController = navController,
+                authViewModel = authViewModel
+            )
         }
 
         composable(Rotas.FEED) {
-            TelaFeed(navController)
+            TelaFeed(
+                navController = navController,
+                authViewModel = authViewModel
+            )
         }
 
         composable(Rotas.PERFIL) {
