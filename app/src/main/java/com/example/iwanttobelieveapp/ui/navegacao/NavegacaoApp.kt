@@ -11,11 +11,14 @@ import com.example.iwanttobelieveapp.ui.telas.perfil.TelaPerfil
 import com.example.iwanttobelieveapp.ui.telas.registrar.TelaRegistrar
 import com.example.iwanttobelieveapp.ui.telas.nova_publi.TelaNovaPubli
 import com.example.iwanttobelieveapp.viewmodel.AutenticacaoViewModel
+import com.example.iwanttobelieveapp.viewmodel.FeedViewModel
+
 @Composable
 fun NavegacaoApp() {
     val navController = rememberNavController()
 
     val authViewModel: AutenticacaoViewModel = viewModel()
+    val feedViewModel: FeedViewModel = viewModel()
 
     val startDestination = if (authViewModel.usuarioEstaLogado()) {
         Rotas.FEED
@@ -44,7 +47,8 @@ fun NavegacaoApp() {
         composable(Rotas.FEED) {
             TelaFeed(
                 navController = navController,
-                authViewModel = authViewModel
+                authViewModel = authViewModel,
+                feedViewModel = feedViewModel
             )
         }
 
@@ -53,7 +57,10 @@ fun NavegacaoApp() {
         }
 
         composable(Rotas.NOVA_PUBLI) {
-            TelaNovaPubli(navController)
+            TelaNovaPubli(
+                navController = navController,
+                feedViewModel = feedViewModel
+            )
         }
     }
 }
