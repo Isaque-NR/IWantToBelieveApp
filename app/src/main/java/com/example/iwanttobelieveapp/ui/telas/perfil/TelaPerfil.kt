@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.iwanttobelieveapp.R
+import com.example.iwanttobelieveapp.ui.theme.Azul
 import com.example.iwanttobelieveapp.ui.theme.Branco
 import com.example.iwanttobelieveapp.ui.theme.VerdeEscuro
 import com.example.iwanttobelieveapp.viewmodel.PerfilViewModel
@@ -63,7 +64,7 @@ fun TelaPerfil(
                         navController.popBackStack()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = VerdeEscuro,
+                        containerColor = Azul,
                         contentColor = Branco
                     )
                 ) {

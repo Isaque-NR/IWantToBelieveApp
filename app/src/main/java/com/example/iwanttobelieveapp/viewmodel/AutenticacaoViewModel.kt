@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthException
 data class AuthUiState(
     val carregando: Boolean = false,
     val erro: String? = null,
@@ -54,12 +55,11 @@ class AutenticacaoViewModel : ViewModel() {
 
             _uiState.value = if (resultado.isSuccess) {
                 AuthUiState(
-                    cadastroConcluido = true
+                    loginConcluido = true
                 )
             } else {
                 AuthUiState(
-                    erro = resultado.exceptionOrNull()?.message
-                        ?: "Erro ao cadastrar usuário."
+                    erro = traduzirErroFirebase(resultado.exceptionOrNull())
                 )
             }
         }
@@ -92,8 +92,7 @@ class AutenticacaoViewModel : ViewModel() {
                 )
             } else {
                 AuthUiState(
-                    erro = resultado.exceptionOrNull()?.message
-                        ?: "Erro ao fazer login."
+                    erro = traduzirErroFirebase(resultado.exceptionOrNull())
                 )
             }
         }
@@ -110,5 +109,40 @@ class AutenticacaoViewModel : ViewModel() {
 
     fun limparEstado() {
         _uiState.value = AuthUiState()
+    }
+
+    private fun traduzirErroFirebase(erro: Throwable?): String {
+        if (erro is FirebaseNetworkException) {
+            return "Sem conexão com a internet. Verifique sua rede e tente novamente."
+        }
+
+        if (erro is FirebaseAuthException) {
+            return when (erro.errorCode) {
+                "ERROR_INVALID_EMAIL" ->
+                    "O e-mail informado não é válido."
+
+                "ERROR_INVALID_CREDENTIAL",
+                "ERROR_WRONG_PASSWORD",
+                "ERROR_USER_NOT_FOUND" ->
+                    "E-mail ou senha incorretos."
+
+                "ERROR_EMAIL_ALREADY_IN_USE" ->
+                    "Este e-mail já está cadastrado."
+
+                "ERROR_WEAK_PASSWORD" ->
+                    "A senha precisa ter pelo menos 6 caracteres."
+
+                "ERROR_USER_DISABLED" ->
+                    "Esta conta foi desativada."
+
+                "ERROR_TOO_MANY_REQUESTS" ->
+                    "Muitas tentativas. Aguarde um pouco e tente novamente."
+
+                else ->
+                    "Não foi possível concluir a operação. Tente novamente."
+            }
+        }
+
+        return "Ocorreu um erro inesperado. Tente novamente."
     }
 }

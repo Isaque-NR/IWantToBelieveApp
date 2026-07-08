@@ -20,3 +20,4 @@ val VermelhoSair = Color(0xFFC62828)
 
 val Branco = Color(0xFFFFFFFF)
 val TextoEscuro = Color(0xFF1B1B1B)
+val Azul = Color(0xFF1565C0)

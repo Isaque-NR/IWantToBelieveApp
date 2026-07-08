@@ -48,6 +48,7 @@ import androidx.compose.ui.res.painterResource
 import coil.request.ImageRequest
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import com.example.iwanttobelieveapp.ui.theme.Azul
 import com.example.iwanttobelieveapp.ui.theme.VerdePrincipal
 import com.example.iwanttobelieveapp.ui.theme.VerdeEscuro
 import com.example.iwanttobelieveapp.ui.theme.VermelhoSair
@@ -94,7 +95,7 @@ fun TelaFeed(
                             navController.navigate(Rotas.PERFIL)
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = VerdeEscuro,
+                            containerColor = Azul,
                             contentColor = Branco
                         )
                     ) {

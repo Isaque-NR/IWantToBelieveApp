@@ -59,7 +59,7 @@ fun NavegacaoApp() {
         composable(Rotas.NOVA_PUBLI) {
             TelaNovaPubli(
                 navController = navController,
-                feedViewModel = feedViewModel
+                feedViewModel = feedViewModel,
             )
         }
     }
